@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Mi perfil{% endblock %}
+
+{% block content %}
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+    </form>
+    <h2>Perfil de {{ perfil.user.username }}</h2>
+    <p><a href="{% url 'edit_profile' %}">Editar perfil</a></p>
+    <p>Nombre: {{ usuario.first_name }} {{ usuario.last_name }}</p>
+    <p>Correo: {{ usuario.email }}</p>
+    <p>Fecha de nacimiento: {{ perfil.birth_date }}</p>
+    {% if perfil.avatar %}
+        <img src="{{ perfil.avatar.url }}" alt="Avatar" class="avatar">
+    {% else %}
+        <p>No hay avatar disponible.</p>
+    {% endif %}
+{% endblock %}

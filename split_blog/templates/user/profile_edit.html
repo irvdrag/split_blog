@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+  <h2>Editar tu perfil</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+
+    <!-- Previsualización de imagen -->
+    <div style="margin: 20px 0;">
+      <label>Vista previa de imagen:</label><br>
+      <img id="imagePreview" 
+           src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'img/default-avatar.png' %}{% endif %}" 
+           class="avatar" 
+           alt="Previsualización de imagen">
+    </div>
+
+    <button type="submit">Guardar cambios</button>
+  </form>
+
+  <p><a href="{% url 'profile' %}">Volver al perfil</a></p>
+
+  <!-- Script de previsualización -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const inputFile = document.querySelector('input[type="file"]');
+      const preview = document.getElementById('imagePreview');
+
+      if (inputFile) {
+        inputFile.addEventListener('change', function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+    });
+  </script>
+{% endblock %}
