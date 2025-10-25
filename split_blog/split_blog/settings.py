@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #mis appls
     'user.apps.UserConfig',  # usa la ruta a tu AppConfig
+    'blog',
+    
    
 ]
 
