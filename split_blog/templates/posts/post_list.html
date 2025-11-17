@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Posts</h1>
+
+{% for post in posts %}
+  <div class="post">
+    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+    <p>Publicado por {{ post.profile.user.username }} el {{ post.created_at|date:"d M Y H:i" }}</p>
+    {% if post.image %}
+      <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width:200px;">
+    {% endif %}
+    <p>{{ post.content|truncatewords:30 }}</p>
+    {% if post.profile == user.profile %}
+      <a href="{% url 'post_edit' post.pk %}">Editar</a>
+      <a href="{% url 'post_delete' post.pk %}">Eliminar</a>
+    {% endif %}
+  </div>
+  <hr>
+{% empty %}
+  <p>No hay posts todavía.</p>
+{% endfor %}
+
+<div class="pagination">
+  {% if is_paginated %}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    {% endif %}
+  {% endif %}
+</div>
+
+<a href="{% url 'post_create' %}">Crear nuevo post</a>
+{% endblock %}

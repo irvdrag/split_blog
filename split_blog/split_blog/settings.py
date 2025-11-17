@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #mis appls
     'user.apps.UserConfig',  # usa la ruta a tu AppConfig
     'blog',
+    'post',
     
    
 ]
@@ -134,5 +135,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #login path
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/user/perfil/'  # o la URL que quieras después de login
+#LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/user/perfil/'  # o la URL que quieras después de login
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/user/perfil/'
