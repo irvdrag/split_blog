@@ -1,0 +1,38 @@
+<div class="comment-box">
+
+    <p>
+        <span class="comment-user">{{ comment.user.username }}</span><br>
+        {{ comment.content }}<br>
+        <span class="comment-date">{{ comment.created_at|date:"d M Y H:i" }}</span>
+    </p>
+
+    {% if user == comment.user %}
+        <a href="{% url 'delete_comment' comment.id %}" class="comment-delete">Borrar</a>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <form method="POST"
+              action="{% url 'add_comment' comment.post.id %}"
+              class="reply-form">
+            {% csrf_token %}
+            <textarea name="content" rows="2" placeholder="Responder..." required></textarea>
+            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+            <button type="submit" class="reply-button">Responder</button>
+        </form>
+    {% endif %}
+
+    {% for reply in comment.replies.all %}
+        <div class="comment-reply">
+            <p>
+                <span class="comment-user">{{ reply.user.username }}</span><br>
+                {{ reply.content }}<br>
+                <span class="comment-date">{{ reply.created_at|date:"d M Y H:i" }}</span>
+            </p>
+
+            {% if user == reply.user %}
+                <a href="{% url 'delete_comment' reply.id %}" class="comment-delete">Borrar</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</div>

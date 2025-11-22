@@ -2,6 +2,7 @@ from django.views.generic import ListView,DetailView,CreateView,UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import Post
+from comments.forms import CommentForm
 
 class PostListView(ListView):
     model = Post
@@ -14,7 +15,7 @@ class PostDetailView(DetailView):
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
 
-    
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content', 'image']
@@ -45,3 +46,13 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return post.profile == self.request.user.profile
+    
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()  # formulario vacío para el template
+        return context

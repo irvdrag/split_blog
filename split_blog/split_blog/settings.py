@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',  # usa la ruta a tu AppConfig
     'blog',
     'post',
+    'comments',
+    
     
    
 ]

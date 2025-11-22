@@ -1,36 +1,65 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Posts</h1>
-
 {% for post in posts %}
-  <div class="post">
-    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-    <p>Publicado por {{ post.profile.user.username }} el {{ post.created_at|date:"d M Y H:i" }}</p>
+  <div class="card">
+
+    <!-- Título -->
+    <h2>
+        <a href="{% url 'post_detail' post.pk %}" style="color:#1D3557; text-decoration:none;">
+            {{ post.title }}
+        </a>
+    </h2>
+
+    <!-- Datos del autor -->
+    <p style="color:#555;">
+        Publicado por 
+        <strong style="color:#457B9D;">{{ post.profile.user.username }}</strong> 
+        el {{ post.created_at|date:"d M Y H:i" }}
+    </p>
+
+    <!-- Imagen -->
     {% if post.image %}
-      <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width:200px;">
+      <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width:100%; border-radius:5px; margin:10px 0;">
     {% endif %}
+
+    <!-- Contenido corto -->
     <p>{{ post.content|truncatewords:30 }}</p>
+
+    <!-- Botones para el autor -->
     {% if post.profile == user.profile %}
-      <a href="{% url 'post_edit' post.pk %}">Editar</a>
-      <a href="{% url 'post_delete' post.pk %}">Eliminar</a>
+      <a href="{% url 'post_edit' post.pk %}" class="button-link">Editar</a>
+      <a href="{% url 'post_delete' post.pk %}" class="button-link" style="background:#E63946;">Eliminar</a>
     {% endif %}
+
+    <hr style="margin:15px 0; border-color:#A8DADC;">
+
+    <!-- ⭐ VISTA PREVIA DE COMENTARIOS -->
+    <div class="comment-preview">
+
+      <h4 style="color:#1D3557; margin-bottom:10px;">Comentarios:</h4>
+
+      {% with comentarios=post.comments.all %}
+          {% if comentarios %}
+              
+              {% for comment in comentarios|slice:":2" %}
+                  <div style="background:#f7f7f7; padding:8px 10px; border-radius:5px; margin-bottom:8px;">
+                      <strong style="color:#457B9D;">{{ comment.user.username }}</strong>:
+                      {{ comment.content|truncatewords:12 }}
+                  </div>
+              {% endfor %}
+
+              {% if comentarios.count > 2 %}
+                  <a href="{% url 'post_detail' post.pk %}" style="color:#457B9D; font-weight:600;">
+                      Ver todos los comentarios…
+                  </a>
+              {% endif %}
+
+          {% else %}
+              <p style="color:#777;">No hay comentarios todavía.</p>
+          {% endif %}
+      {% endwith %}
+
+    </div>
+
   </div>
-  <hr>
 {% empty %}
   <p>No hay posts todavía.</p>
 {% endfor %}
-
-<div class="pagination">
-  {% if is_paginated %}
-    {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-    {% endif %}
-    <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-    {% endif %}
-  {% endif %}
-</div>
-
-<a href="{% url 'post_create' %}">Crear nuevo post</a>
-{% endblock %}
