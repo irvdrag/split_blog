@@ -6,5 +6,5 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Add a comment...'})
+            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escribe un comentario...'}),
         }
