@@ -1,0 +1,39 @@
+# Entorno virtual
+venv/
+env/
+.venv/
+
+# Archivos de entorno
+.env
+*.env
+
+# Archivos de Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Archivos de logs
+*.log
+
+# Archivos estáticos generados
+staticfiles/
+static/
+
+# Archivos multimedia (opcionales si subes a storage externo)
+media/
+
+# Configuración del editor
+.vscode/
+.idea/
+
+# Archivos de compilación
+*.pot
+*.pyc
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de cobertura y pruebas
+.coverage
+htmlcov/
